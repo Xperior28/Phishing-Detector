@@ -9,14 +9,13 @@ API_KEY = "df82d2283efde4dede6dbf9e96382ff531d1a6a2308303f13b08fc926a874897"
 
 
 
-# Input and output file names
+# Input and Output file names
 INPUT_CSV = "urls.csv" 
 OUTPUT_EXCEL = "dataset.xlsx"
 
 # Read URLs from CSV
 df = pd.read_csv(INPUT_CSV)
 
-# Prepare a list to store results
 results_list = []
 
 # Process each URL
@@ -33,7 +32,7 @@ for test_url in df["url"]:
     analysis_id = data["data"]["id"]
 
     analysis_url = f"https://www.virustotal.com/api/v3/analyses/{analysis_id}"
-    time.sleep(15)  # Wait to allow the scan to complete
+    time.sleep(15)   # Wait to allow the scan to complete
 
     HEADERS = {
         "Accept": "application/json",
@@ -43,7 +42,7 @@ for test_url in df["url"]:
     data = response.json()
     print(data)
 
-    flag = 0  # Default: clean
+    flag = 0 
     results = data["data"]["attributes"]["results"]
     for engine, details in results.items():
         if details.get("result") == "phishing":
@@ -54,9 +53,7 @@ for test_url in df["url"]:
     results_list.append({"url": test_url, "label": label})
     print(results_list)
 
-    
 
-# Convert to DataFrame and save to Excel
 output_df = pd.DataFrame(results_list)
 output_df.to_excel(OUTPUT_EXCEL, index=False)
 

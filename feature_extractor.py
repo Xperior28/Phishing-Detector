@@ -59,11 +59,10 @@ def extract_url_features(url):
     return features
 
 # Load dataset
-input_file = "dataset.xlsx"  # Change this to your input file
+input_file = "dataset.xlsx"
 output_file = "feature_dataset.xlsx"
 df = pd.read_excel(input_file)
 
-# Ensure dataset has necessary columns
 if "url" not in df.columns or "label" not in df.columns:
     raise ValueError("Input file must contain 'URL' and 'Label' columns")
 

@@ -8,18 +8,16 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 # Load dataset
 df = pd.read_excel("feature_dataset.xlsx")
 
-# Drop non-numeric columns
+
 df = df.drop(columns=["url"])
 
-# Separate features (X) and target labels (y)
 X = df.drop(columns=["label"])
 y = df["label"]
 
 # Convert string labels to numbers
 label_encoder = LabelEncoder()
-y = label_encoder.fit_transform(y)  # "phishing" → 1, "legitimate" → 0
+y = label_encoder.fit_transform(y)  # "phishing" → 1, "clean" → 0
 
-# Print mapping
 print(dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_))))
 
 # Normalize features (MLP performs better with scaled input)
@@ -43,7 +41,7 @@ model = Sequential([
     Dropout(0.3),
     
     Dense(32, activation='relu'),
-    Dense(1, activation='sigmoid')  # Output layer for binary classification
+    Dense(1, activation='sigmoid')   # Output layer for binary classification
 ])
 
 # Compile model
@@ -55,15 +53,13 @@ model.fit(X_train, y_train, epochs=50, batch_size=32, validation_data=(X_test, y
 
 # Predict on test set
 y_pred = model.predict(X_test)
-y_pred = (y_pred > 0.5).astype(int)  # Convert probabilities to 0 or 1
+y_pred = (y_pred > 0.5).astype(int)   # Convert probabilities to 0 or 1
 
 # Compute metrics
 accuracy = accuracy_score(y_test, y_pred)
 precision = precision_score(y_test, y_pred)
 recall = recall_score(y_test, y_pred)
 f1 = f1_score(y_test, y_pred)
-
-# Print results
 print(f"Accuracy: {accuracy:.4f}")
 print(f"Precision: {precision:.4f}")
 print(f"Recall: {recall:.4f}")

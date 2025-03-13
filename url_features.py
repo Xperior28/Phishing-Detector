@@ -1,10 +1,10 @@
-# 0 stands for legitimate
+# 0 stands for clean
 # 1 stands for phishing
 
 import re
 
 
-#LOCALHOST_PATH = "/var/www/html/"
+LOCALHOST_PATH = "/var/www/html/"
 HINTS = ['wp', 'login', 'includes', 'admin', 'content', 'site', 'images', 'js', 'alibaba', 'css', 'myaccount', 'dropbox', 'themes', 'plugins', 'signin', 'view']
 
 allbrand_txt = open("allbrands.txt", "r")
@@ -17,36 +17,30 @@ def __txt_to_list(txt_object):
     return list
 
 allbrand = __txt_to_list(allbrand_txt)
-#print(allbrand)
+print(allbrand)
 
-#################################################################################################################################
-#               Having IP address in hostname
-#################################################################################################################################
 
+# Having IP address in hostname
 def having_ip_address(url):
     match = re.search(
         '(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.'
-        '([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/)|'  # IPv4
-        '((0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\/)|'  # IPv4 in hexadecimal
+        '([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\/)|'   # IPv4
+        '((0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\.(0x[0-9a-fA-F]{1,2})\\/)|'   # IPv4 in hexadecimal
         '(?:[a-fA-F0-9]{1,4}:){7}[a-fA-F0-9]{1,4}|'
-        '[0-9a-fA-F]{7}', url)  # Ipv6
+        '[0-9a-fA-F]{7}', url)   # Ipv6
     if match:
         return 1
     else:
         return 0
 
-#################################################################################################################################
-#               URL hostname length 
-#################################################################################################################################
 
+# URL hostname length 
 def url_length(url):
     return len(url) 
 
 
-#################################################################################################################################
-#               URL shortening
-#################################################################################################################################
 
+# URL shortening
 def shortening_service(full_url):
     match = re.search('bit\.ly|goo\.gl|shorte\.st|go2l\.ink|x\.co|ow\.ly|t\.co|tinyurl|tr\.im|is\.gd|cli\.gs|'
                       'yfrog\.com|migre\.me|ff\.im|tiny\.cc|url4\.eu|twit\.ac|su\.pr|twurl\.nl|snipurl\.com|'
@@ -63,53 +57,38 @@ def shortening_service(full_url):
         return 0
 
 
-#################################################################################################################################
-#               Count at (@) symbol at base url
-#################################################################################################################################
-
+# Count at (@) symbol at base url
 def count_at(base_url):
      return base_url.count('@')
  
-#################################################################################################################################
-#               Count comma (,) symbol at base url
-#################################################################################################################################
 
+# Count comma (,) symbol at base url
 def count_comma(base_url):
      return base_url.count(',')
 
-#################################################################################################################################
-#               Count dollar ($) symbol at base url
-#################################################################################################################################
 
+# Count dollar ($) symbol at base url
 def count_dollar(base_url):
      return base_url.count('$')
 
-#################################################################################################################################
-#               Having semicolumn (;) symbol at base url
-#################################################################################################################################
 
+# Having semicolumn (;) symbol at base url
 def count_semicolumn(url):
      return url.count(';')
 
-#################################################################################################################################
-#               Count (space, %20) symbol at base url (Das'19)
-#################################################################################################################################
 
+# Count (space, %20) symbol at base url (Das'19)
 def count_space(base_url):
      return base_url.count(' ')+base_url.count('%20')
 
-#################################################################################################################################
-#               Count and (&) symbol at base url (Das'19)
-#################################################################################################################################
 
+# Count and (&) symbol at base url (Das'19)
 def count_and(base_url):
      return base_url.count('&')
 
 
-#################################################################################################################################
-#               Count redirection (//) symbol at full url
-#################################################################################################################################
 
+# Count redirection (//) symbol at full url
 def count_double_slash(full_url):
     list=[x.start(0) for x in re.finditer('//', full_url)]
     if list[len(list)-1]>6:
@@ -119,160 +98,120 @@ def count_double_slash(full_url):
     return full_url.count('//')
 
 
-#################################################################################################################################
-#               Count slash (/) symbol at full url
-#################################################################################################################################
 
+# Count slash (/) symbol at full url
 def count_slash(full_url):
     return full_url.count('/')
 
-#################################################################################################################################
-#               Count equal (=) symbol at base url
-#################################################################################################################################
 
+# Count equal (=) symbol at base url
 def count_equal(base_url):
     return base_url.count('=')
 
-#################################################################################################################################
-#               Count percentage (%) symbol at base url (Chiew2019)
-#################################################################################################################################
 
+# Count percentage (%) symbol at base url (Chiew2019)
 def count_percentage(base_url):
     return base_url.count('%')
 
 
-#################################################################################################################################
-#               Count exclamation (?) symbol at base url
-#################################################################################################################################
 
+# Count exclamation (?) symbol at base url
 def count_exclamation(base_url):
     return base_url.count('?')
 
-#################################################################################################################################
-#               Count underscore (_) symbol at base url
-#################################################################################################################################
 
+# Count underscore (_) symbol at base url
 def count_underscore(base_url):
     return base_url.count('_')
 
 
-#################################################################################################################################
-#               Count dash (-) symbol at base url
-#################################################################################################################################
 
+# Count dash (-) symbol at base url
 def count_hyphens(base_url):
     return base_url.count('-')
 
-#################################################################################################################################
-#              Count number of dots in hostname
-#################################################################################################################################
 
+# Count number of dots in hostname
 def count_dots(hostname):
     return hostname.count('.')
 
-#################################################################################################################################
-#              Count number of colon (:) symbol
-#################################################################################################################################
 
+# Count number of colon (:) symbol
 def count_colon(url):
     return url.count(':')
 
-#################################################################################################################################
-#               Count number of stars (*) symbol (Srinivasa Rao'19)
-#################################################################################################################################
 
+# Count number of stars (*) symbol (Srinivasa Rao'19)
 def count_star(url):
     return url.count('*')
 
-#################################################################################################################################
-#               Count number of OR (|) symbol (Srinivasa Rao'19)
-#################################################################################################################################
 
+# Count number of OR (|) symbol (Srinivasa Rao'19)
 def count_or(url):
     return url.count('|')
 
 
-#################################################################################################################################
-#               Path entension != .txt
-#################################################################################################################################
 
+# Path entension != .txt
 def path_extension(url_path):
     if url_path.endswith('.txt'):
         return 1
     return 0
 
-#################################################################################################################################
-#               Having multiple http or https in url path
-#################################################################################################################################
 
+# Having multiple http or https in url path
 def count_http_token(url_path):
     return url_path.count('http')
 
-#################################################################################################################################
-#               Uses https protocol
-#################################################################################################################################
 
+# Uses https protocol
 def https_token(scheme):
     if scheme == 'https':
         return 0
     return 1
 
-#################################################################################################################################
-#               Ratio of digits in hostname 
-#################################################################################################################################
 
+# Ratio of digits in hostname 
 def ratio_digits(hostname):
     return len(re.sub("[^0-9]", "", hostname))/len(hostname)
 
-#################################################################################################################################
-#               Count number of digits in domain/subdomain/path
-#################################################################################################################################
 
+# Count number of digits in domain/subdomain/path
 def count_digits(line):
     return len(re.sub("[^0-9]", "", line))
 
-#################################################################################################################################
-#              Checks if tilde symbol exist in webpage URL (Chiew2019)
-#################################################################################################################################
 
+# Checks if tilde symbol exist in webpage URL (Chiew2019)
 def count_tilde(full_url):
     if full_url.count('~')>0:
         return 1
     return 0
 
 
-#################################################################################################################################
-#               number of phish-hints in url path 
-#################################################################################################################################
 
+# Number of phish-hints in url path 
 def phish_hints(url_path):
     count = 0
     for hint in HINTS:
         count += url_path.lower().count(hint)
     return count
 
-#################################################################################################################################
-#               Check if TLD exists in the path 
-#################################################################################################################################
 
+# Check if TLD exists in the path 
 def tld_in_path(tld, path):
     if path.lower().count(tld)>0:
         return 1
     return 0
     
-#################################################################################################################################
-#               Check if tld is used in the subdomain 
-#################################################################################################################################
 
+# Check if tld is used in the subdomain 
 def tld_in_subdomain(tld, subdomain):
     if subdomain.count(tld)>0:
         return 1
     return 0
 
-#################################################################################################################################
-#               Check if TLD in bad position (Chiew2019)
-#################################################################################################################################
 
+# Check if TLD in bad position (Chiew2019)
 def tld_in_bad_position(tld, subdomain, path):
     if tld_in_path(tld, path)== 1 or tld_in_subdomain(tld, subdomain)==1:
         return 1
@@ -280,27 +219,20 @@ def tld_in_bad_position(tld, subdomain, path):
 
 
 
-#################################################################################################################################
-#               Abnormal subdomain starting with wwww-, wwNN
-#################################################################################################################################
-
+#Abnormal subdomain starting with wwww-, wwNN
 def abnormal_subdomain(url):
     if re.search('(http[s]?://(w[w]?|\d))([w]?(\d|-))',url):
         return 1
     return 0
     
 
-#################################################################################################################################
-#               Number of redirection 
-#################################################################################################################################
 
+# Number of redirection 
 def count_redirection(page):
     return len(page.history)
     
-#################################################################################################################################
-#               Number of redirection to different domains
-#################################################################################################################################
 
+# Number of redirection to different domains
 def count_external_redirection(page, domain):
     count = 0
     if len(page.history) == 0:
@@ -312,20 +244,16 @@ def count_external_redirection(page, domain):
             return count
 
     
-#################################################################################################################################
-#               Is the registered domain created with random characters (Sahingoz2019)
-#################################################################################################################################
 
-# from word_with_nlp import nlp_class
+# Is the registered domain created with random characters (Sahingoz2019)
+#  from word_with_nlp import nlp_class
 
-# def random_domain(domain):
-#         nlp_manager = nlp_class()
-#         return nlp_manager.check_word_random(domain)
+#  def random_domain(domain):
+#          nlp_manager = nlp_class()
+#          return nlp_manager.check_word_random(domain)
     
-#################################################################################################################################
-#               Consecutive Character Repeat (Sahingoz2019)
-#################################################################################################################################
 
+# Consecutive Character Repeat (Sahingoz2019)
 def char_repeat(words_raw):
     
         def __all_same(items):
@@ -342,20 +270,16 @@ def char_repeat(words_raw):
                         repeat[str(char_repeat_count)] = repeat[str(char_repeat_count)] + 1
         return  sum(list(repeat.values()))
     
-#################################################################################################################################
-#               puny code in domain (Sahingoz2019)
-#################################################################################################################################
 
+# Puny code in domain (Sahingoz2019)
 def punycode(url):
     if url.startswith("http://xn--") or url.startswith("http://xn--"):
         return 1
     else:
         return 0
 
-#################################################################################################################################
-#               domain in brand list (Sahingoz2019)
-#################################################################################################################################
 
+# Domain in brand list (Sahingoz2019)
 def domain_in_brand(domain):
         
     if domain in allbrand:
@@ -372,10 +296,8 @@ def domain_in_brand1(domain):
 
 
 
-#################################################################################################################################
-#               brand name in path (Srinivasa-Rao2019)
-#################################################################################################################################
 
+# Brand name in path (Srinivasa-Rao2019)
 def brand_in_path(domain,path):
     for b in allbrand:
         if '.'+b+'.' in path and b not in domain:
@@ -383,10 +305,8 @@ def brand_in_path(domain,path):
     return 0
 
 
-#################################################################################################################################
-#               count www in url words (Sahingoz2019)
-#################################################################################################################################
 
+# Count www in url words (Sahingoz2019)
 def check_www(words_raw):
         count = 0
         for word in words_raw:
@@ -394,10 +314,8 @@ def check_www(words_raw):
                 count += 1
         return count
     
-#################################################################################################################################
-#               count com in url words (Sahingoz2019)
-#################################################################################################################################
 
+# Count com in url words (Sahingoz2019)
 def check_com(words_raw):
         count = 0
         for word in words_raw:
@@ -405,64 +323,50 @@ def check_com(words_raw):
                 count += 1
         return count
 
-#################################################################################################################################
-#               check port presence in domain
-#################################################################################################################################
 
+# Check port presence in domain
 def port(url):
     if re.search("^[a-z][a-z0-9+\-.]*://([a-z0-9\-._~%!$&'()*+,;=]+@)?([a-z0-9\-._~%]+|\[[a-z0-9\-._~%!$&'()*+,;=:]+\]):([0-9]+)",url):
         return 1
     return 0
 
-#################################################################################################################################
-#               length of raw word list (Sahingoz2019)
-#################################################################################################################################
 
+# Length of raw word list (Sahingoz2019)
 def length_word_raw(words_raw):
     return len(words_raw) 
 
-#################################################################################################################################
-#               count average word length in raw word list (Sahingoz2019)
-#################################################################################################################################
 
+# Count average word length in raw word list (Sahingoz2019)
 def average_word_length(words_raw):
     if len(words_raw) ==0:
         return 0
     return sum(len(word) for word in words_raw) / len(words_raw)
 
-#################################################################################################################################
-#               longest word length in raw word list (Sahingoz2019)
-#################################################################################################################################
 
+# Longest word length in raw word list (Sahingoz2019)
 def longest_word_length(words_raw):
     if len(words_raw) ==0:
         return 0
     return max(len(word) for word in words_raw) 
 
-#################################################################################################################################
-#               shortest word length in raw word list (Sahingoz2019)
-#################################################################################################################################
 
+# Shortest word length in raw word list (Sahingoz2019)
 def shortest_word_length(words_raw):
     if len(words_raw) ==0:
         return 0
     return min(len(word) for word in words_raw) 
 
 
-#################################################################################################################################
-#               prefix suffix
-#################################################################################################################################
 
+# Prefix Suffix
 def prefix_suffix(url):
     if re.findall(r"https?://[^\-]+-[^\-]+/", url):
         return 1
     else:
         return 0 
 
-#################################################################################################################################
-#               count subdomain
-#################################################################################################################################
 
+# Count subdomain
 def count_subdomain(url):
     if len(re.findall("\.", url)) == 1:
         return 1
@@ -471,10 +375,8 @@ def count_subdomain(url):
     else:
         return 3
 
-#################################################################################################################################
-#               Statistical report
-#################################################################################################################################
 
+# Statistical report
 import socket
 
 def statistical_report(url, domain):
@@ -494,18 +396,16 @@ def statistical_report(url, domain):
     except:
         return 2
 
-#################################################################################################################################
-#               Suspecious TLD
-#################################################################################################################################
 
-suspecious_tlds = ['fit','tk', 'gp', 'ga', 'work', 'ml', 'date', 'wang', 'men', 'icu', 'online', 'click', # Spamhaus
+# Suspecious TLD
+suspecious_tlds = ['fit','tk', 'gp', 'ga', 'work', 'ml', 'date', 'wang', 'men', 'icu', 'online', 'click',  # Spamhaus
         'country', 'stream', 'download', 'xin', 'racing', 'jetzt',
         'ren', 'mom', 'party', 'review', 'trade', 'accountants', 
         'science', 'work', 'ninja', 'xyz', 'faith', 'zip', 'cricket', 'win',
-        'accountant', 'realtor', 'top', 'christmas', 'gdn', # Shady Top-Level Domains
-        'link', # Blue Coat Systems
+        'accountant', 'realtor', 'top', 'christmas', 'gdn',  # Shady Top-Level Domains
+        'link',  # Blue Coat Systems
         'asia', 'club', 'la', 'ae', 'exposed', 'pe', 'go.id', 'rs', 'k12.pa.us', 'or.kr',
-        'ce.ke', 'audio', 'gob.pe', 'gov.az', 'website', 'bj', 'mx', 'media', 'sa.gov.au' # statistics
+        'ce.ke', 'audio', 'gob.pe', 'gov.az', 'website', 'bj', 'mx', 'media', 'sa.gov.au'  # statistics
         ]
 
 
