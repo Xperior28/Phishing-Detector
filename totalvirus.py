@@ -10,7 +10,7 @@ API_KEY = "df82d2283efde4dede6dbf9e96382ff531d1a6a2308303f13b08fc926a874897"
 
 
 # Input and Output file names
-INPUT_CSV = "urls.csv" 
+INPUT_CSV = "urls_fullset.csv" 
 OUTPUT_EXCEL = "dataset.xlsx"
 
 # Read URLs from CSV
