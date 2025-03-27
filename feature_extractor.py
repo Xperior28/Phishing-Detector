@@ -3,6 +3,7 @@ import url_features as urlfe
 import tldextract
 import re
 from urllib.parse import urlparse
+import numpy as np
 
 # Function to extract URL-based features
 def extract_url_features(url):
@@ -58,32 +59,38 @@ def extract_url_features(url):
     ]
     return features
 
-# Load dataset
-input_file = "dataset.xlsx"
-output_file = "feature_dataset.xlsx"
-df = pd.read_excel(input_file)
 
-if "url" not in df.columns or "label" not in df.columns:
-    raise ValueError("Input file must contain 'URL' and 'Label' columns")
+if __name__ == "__main__":
+    # Load dataset
+    input_file = "balanced_phishing_urls.xlsx"
+    output_file = "feature_dataset.xlsx"
+    df = pd.read_excel(input_file)
 
-# Extract features
-feature_names = [
-    "length_url", "length_hostname", "ip", "nb_dots", "nb_hyphens", "nb_at", "nb_qm", "nb_and", "nb_or",
-    "nb_eq", "nb_underscore", "nb_tilde", "nb_percent", "nb_slash", "nb_star", "nb_colon", "nb_comma",
-    "nb_semicolumn", "nb_dollar", "nb_space", "nb_www", "nb_com", "nb_dslash", "http_in_path", "https_token",
-    "ratio_digits_url", "ratio_digits_host", "punycode", "port", "tld_in_path", "tld_in_subdomain",
-    "abnormal_subdomain", "nb_subdomains", "prefix_suffix", "shortening_service", "path_extension",
-    "phish_hints", "domain_in_brand", "brand_in_subdomain", "brand_in_path", "suspecious_tld"
-]
+    if "url" not in df.columns or "label" not in df.columns:
+        raise ValueError("Input file must contain 'URL' and 'Label' columns")
 
-feature_data = []
-for _, row in df.iterrows():
-    url = row["url"]
-    label = row["label"]
-    features = extract_url_features(url)
-    feature_data.append([url] + features + [label])
+    # Extract features
+    feature_names = [
+        "length_url", "length_hostname", "ip", "nb_dots", "nb_hyphens", "nb_at", "nb_qm", "nb_and", "nb_or",
+        "nb_eq", "nb_underscore", "nb_tilde", "nb_percent", "nb_slash", "nb_star", "nb_colon", "nb_comma",
+        "nb_semicolumn", "nb_dollar", "nb_space", "nb_www", "nb_com", "nb_dslash", "http_in_path", "https_token",
+        "ratio_digits_url", "ratio_digits_host", "punycode", "port", "tld_in_path", "tld_in_subdomain",
+        "abnormal_subdomain", "nb_subdomains", "prefix_suffix", "shortening_service", "path_extension",
+        "phish_hints", "domain_in_brand", "brand_in_subdomain", "brand_in_path", "suspecious_tld"
+    ]
 
-# Save extracted features
-output_df = pd.DataFrame(feature_data, columns=["url"] + feature_names + ["label"])
-output_df.to_excel(output_file, index=False)
-print(f"Feature extraction completed. Saved to {output_file}")
+    feature_data = []
+    for _, row in df.iterrows():
+        url = row["url"]
+        label = row["label"]
+        print(url)
+        if url and isinstance(url, str) and not (isinstance(url, float) and np.isnan(url)):
+            features = extract_url_features(url)
+            feature_data.append([url] + features + [label])
+        else:
+            print(f"Invalid URL encountered: {url}")
+
+    # Save extracted features
+    output_df = pd.DataFrame(feature_data, columns=["url"] + feature_names + ["label"])
+    output_df.to_excel(output_file, index=False)
+    print(f"Feature extraction completed. Saved to {output_file}")

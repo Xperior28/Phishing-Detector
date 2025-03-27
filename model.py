@@ -1,12 +1,13 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Model, load_model
 from tensorflow.keras.layers import Input, Conv1D, BatchNormalization, Activation, SeparableConv1D, MaxPooling1D, Flatten, Dense, Dropout, Add
 from tensorflow.keras.optimizers import Adam
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+import joblib
 
 def create_convolutional_block(x, filters, kernel_size=3):
     """
@@ -104,12 +105,13 @@ def preprocess_url_features(url_features):
     """
     return np.reshape(url_features, (url_features.shape[0], url_features.shape[1], 1))
 
-def predict_url_class(model, url_features, threshold=0.5):
+def predict_url_class(test_model, url_features, threshold=0.5):
     """
     Predict whether URLs are phishing (1) or benign (0)
     """
     # Get prediction probabilities
-    predictions = model.predict(url_features)
+    predictions = test_model.predict(url_features)
+    print(predictions[:20])
     
     # Apply threshold (as mentioned in the paper)
     predicted_classes = (predictions[:, 1] >= threshold).astype(int)
@@ -120,6 +122,7 @@ def predict_url_class(model, url_features, threshold=0.5):
 if __name__ == "__main__":
     # Build the model
     model = build_phishing_detection_model(input_shape=(41, 1))
+    
     
     # Print model summary
     model.summary()
@@ -135,21 +138,30 @@ if __name__ == "__main__":
 
     # Convert string labels to numbers
     label_encoder = LabelEncoder()
-    y = label_encoder.fit_transform(y)  # "phishing" → 1, "clean" → 0
+    y = label_encoder.fit_transform(y) 
 
     print(dict(zip(label_encoder.classes_, label_encoder.transform(label_encoder.classes_))))
 
     # Normalize features (MLP performs better with scaled input)
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
+    # Save the fitted scaler
+    joblib.dump(scaler, "scaler.pkl")
+    print("Saved Scaler Transform!")
 
     # Split into training and testing sets (80% train, 20% test)
-    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.35, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
     
-    model.fit(X_train, y_train, batch_size=32, epochs=50, validation_split=0.35)
+    model.fit(X_train, y_train, batch_size=64, epochs=20, validation_split=0.2)
+
+    model.save("phishing_detection_model.h5")
+    print("Model has been saved!")
+
+    test_model = load_model("phishing_detection_model.h5")
     
+    print(X_test[:10])
     # Predict on test set
-    y_pred = predict_url_class(model, X_test, 0.5)
+    y_pred = predict_url_class(test_model, X_test, 0.5)
 
     # Compute metrics
     accuracy = accuracy_score(y_test, y_pred)

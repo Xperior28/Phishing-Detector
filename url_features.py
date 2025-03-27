@@ -91,7 +91,7 @@ def count_and(base_url):
 # Count redirection (//) symbol at full url
 def count_double_slash(full_url):
     list=[x.start(0) for x in re.finditer('//', full_url)]
-    if list[len(list)-1]>6:
+    if len(list)>0 and list[len(list)-1]>6:
         return 1
     else:
         return 0
