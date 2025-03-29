@@ -62,8 +62,8 @@ def extract_url_features(url):
 
 if __name__ == "__main__":
     # Load dataset
-    input_file = "balanced_phishing_urls.xlsx"
-    output_file = "feature_dataset.xlsx"
+    input_file = "training_dataset.xlsx"
+    output_file = "training_feature_dataset.xlsx"
     df = pd.read_excel(input_file)
 
     if "url" not in df.columns or "label" not in df.columns:

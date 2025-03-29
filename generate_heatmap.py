@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-df = pd.read_excel("feature_dataset.xlsx")
+df = pd.read_excel("training_feature_dataset.xlsx")
 
 
 df_numeric = df.drop(columns=["url", "label"])
@@ -17,7 +17,7 @@ plt.figure(figsize=(12, 10))
 # Generate heatmap
 sns.heatmap(correlation_matrix, cmap="coolwarm", annot=False, linewidths=0.5)
 
-filename = "221IT055-Heatmap.JPEG"
+filename = "Heatmap.JPEG"
 plt.savefig(filename, dpi=300, format='jpeg')
 
 

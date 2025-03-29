@@ -85,7 +85,7 @@ export default function Home() {
             <div className="flex gap-2">
               <Input
                 id="url-input"
-                placeholder="https://example.com"
+                placeholder="example.com"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
                 className="flex-1"
