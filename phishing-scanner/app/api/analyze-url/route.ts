@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Simulate analysis result
-    const response = await fetch("http://0.0.0.0:8000/predict", {
+    const response = await fetch("https://6e81-2a09-bac1-36a0-58-00-176-7d.ngrok-free.app/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

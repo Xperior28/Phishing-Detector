@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
 from tensorflow.keras.models import load_model
 from pydantic import BaseModel
@@ -8,6 +9,21 @@ import joblib
 
 # Initialize FastAPI app
 app = FastAPI()
+
+# Define allowed origins (Vercel frontend URL)
+origins = [
+    "http://localhost:3000",  # Local Next.js development
+    "https://phishing-detector-eta.vercel.app/",  # Deployed Vercel frontend
+]
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow only specified origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 # Load the saved model
 test_model = load_model("phishing_detection_model.h5")
